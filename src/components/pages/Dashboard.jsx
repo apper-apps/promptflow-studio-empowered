@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Button from '@/components/atoms/Button';
@@ -10,6 +10,7 @@ import SkeletonLoader from '@/components/molecules/SkeletonLoader';
 import ErrorState from '@/components/molecules/ErrorState';
 import ApperIcon from '@/components/ApperIcon';
 import Badge from '@/components/atoms/Badge';
+import WizardBuilder from '@/components/organisms/WizardBuilder';
 import promptChainService from '@/services/api/promptChainService';
 import analyticsService from '@/services/api/analyticsService';
 
@@ -18,8 +19,9 @@ const Dashboard = () => {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showWizard, setShowWizard] = useState(false);
+  const [wizardKey, setWizardKey] = useState(0);
   const navigate = useNavigate();
-
   useEffect(() => {
     loadDashboardData();
   }, []);
@@ -43,8 +45,25 @@ const Dashboard = () => {
     }
   };
 
-  const handleCreateChain = () => {
-    navigate('/chains');
+const handleCreateChain = () => {
+    setWizardKey(prev => prev + 1); // Force wizard re-initialization
+    setShowWizard(true);
+  };
+
+const handleWizardComplete = (chainData) => {
+    setShowWizard(false);
+    toast.success('Chain created successfully! Opening editor...');
+    // Navigate to chains page after successful creation
+    setTimeout(() => {
+      navigate('/chains');
+    }, 1000);
+    // Reload dashboard data to show the new chain
+    loadDashboardData();
+  };
+
+  const handleWizardCancel = () => {
+    setShowWizard(false);
+    toast.info('Chain creation cancelled');
   };
 
   const handleViewChain = (chainId) => {
@@ -347,7 +366,38 @@ const Dashboard = () => {
             </div>
           </Card>
         </motion.div>
-      )}
+)}
+
+      {/* Wizard Modal */}
+      <AnimatePresence>
+        {showWizard && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                handleWizardCancel();
+              }
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="w-full max-w-4xl max-h-[90vh] m-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <WizardBuilder
+                key={wizardKey}
+                onComplete={handleWizardComplete}
+                onCancel={handleWizardCancel}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
