@@ -52,18 +52,19 @@ const Input = ({
           {...props}
         />
 
-        {label && (
+{label && (
           <motion.label
             initial={false}
             animate={{
               top: shouldFloat ? '0.5rem' : '50%',
               fontSize: shouldFloat ? '0.75rem' : '1rem',
               color: error ? '#EF4444' : focused ? '#3B82F6' : '#9CA3AF',
-              y: shouldFloat ? 0 : '-50%'
+              y: shouldFloat ? 0 : '-50%',
+              zIndex: 10
             }}
             transition={{ duration: 0.2 }}
             className={`
-              absolute left-4 pointer-events-none transform origin-left
+              absolute pointer-events-none transform origin-left bg-surface px-1
               ${icon ? 'left-10' : 'left-4'}
             `}
           >

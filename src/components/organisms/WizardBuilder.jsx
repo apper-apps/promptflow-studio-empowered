@@ -368,13 +368,14 @@ const WizardBuilder = ({ onComplete, onCancel }) => {
     }
   };
 
-  return (
-    <div className="flex-1 flex items-center justify-center p-6 bg-background/50">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-4xl"
-      >
+return (
+    <div className="flex-1 flex flex-col overflow-hidden bg-background/50">
+      <div className="flex-1 flex items-start justify-center p-6 overflow-y-auto">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-4xl my-auto"
+        >
         <Card className="p-8">
           <div className="mb-8">
             <div className="flex items-center justify-between mb-6">
@@ -428,8 +429,9 @@ const WizardBuilder = ({ onComplete, onCancel }) => {
               {currentStep === 3 && 'Finish Wizard'}
             </Button>
           </div>
-        </Card>
+</Card>
       </motion.div>
+      </div>
     </div>
   );
 };
