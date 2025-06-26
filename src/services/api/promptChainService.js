@@ -141,10 +141,11 @@ Generated content with personalized elements based on your specific requirements
         label: 'User Input',
         variable: 'user_input',
         type: 'text',
-        required: true
+required: true
       });
     }
-return { fields, analyzedPrompt: prompt };
+
+    return { fields, analyzedPrompt: prompt };
   }
 };
 
