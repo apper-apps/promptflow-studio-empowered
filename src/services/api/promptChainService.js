@@ -1,8 +1,7 @@
-import { promptChains } from "@/services/mockData/promptChains.json";
-
+import promptChainsData from "@/services/mockData/promptChains.json";
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-let data = [...promptChains];
+let data = [...promptChainsData.promptChains];
 
 export const promptChainService = {
   async getAll() {
@@ -95,7 +94,7 @@ export const promptChainService = {
 
 Generated content with personalized elements based on your specific requirements and preferences.`;
 
-return {
+    return {
       prompt: finalPrompt,
       response: mockResponse,
       model: model,
@@ -145,8 +144,8 @@ return {
         required: true
       });
     }
-
-    return { fields, analyzedPrompt: prompt };
+return { fields, analyzedPrompt: prompt };
   }
+};
 
 export default promptChainService;
