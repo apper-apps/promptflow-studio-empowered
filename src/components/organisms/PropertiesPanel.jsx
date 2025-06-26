@@ -277,13 +277,12 @@ const PropertiesPanel = ({
               type="textarea"
               label="Help Text"
               value={nodeData.helpText}
-              onChange={(e) => handleChange('helpText', e.target.value)}
+onChange={(e) => handleChange('helpText', e.target.value)}
               placeholder="Additional instructions for users"
             />
           </div>
         </Card>
-
-{/* Actions */}
+        {/* Actions */}
         <div className="flex gap-2">
           <Button 
             variant="danger" 
@@ -318,5 +317,6 @@ const PropertiesPanel = ({
       </div>
     </motion.div>
   );
+};
 
 export default PropertiesPanel;
