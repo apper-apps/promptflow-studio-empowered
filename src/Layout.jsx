@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import ApperIcon from '@/components/ApperIcon';
-import { routes } from '@/config/routes';
-
+import React, { useContext, useState } from "react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
+import { AuthContext } from "@/App";
+import "@/index.css";
+import routes from "@/config/routes";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -53,15 +56,15 @@ const Layout = () => {
           </ul>
         </nav>
 
-        <div className="p-4 border-t border-glass-border">
+<div className="p-4 border-t border-glass-border">
           <div className="flex items-center gap-3 px-4 py-3">
             <div className="w-8 h-8 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center">
               <ApperIcon name="User" size={16} className="text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm">Demo User</p>
-              <p className="text-xs text-gray-400">Free Plan</p>
+              <UserInfo />
             </div>
+            <LogoutButton />
           </div>
         </div>
       </aside>
@@ -161,6 +164,45 @@ const Layout = () => {
         </main>
       </div>
     </div>
+  );
+};
+
+const UserInfo = () => {
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  
+  if (!isAuthenticated || !user) {
+    return (
+      <>
+        <p className="font-medium text-sm">Guest User</p>
+        <p className="text-xs text-gray-400">Not authenticated</p>
+      </>
+    );
+  }
+  
+  return (
+    <>
+      <p className="font-medium text-sm">{user.firstName || user.name || 'User'}</p>
+      <p className="text-xs text-gray-400">{user.accounts?.[0]?.companyName || 'Free Plan'}</p>
+    </>
+  );
+};
+
+const LogoutButton = () => {
+  const { logout } = useContext(AuthContext);
+  const { isAuthenticated } = useSelector((state) => state.user);
+  
+  if (!isAuthenticated) {
+    return null;
+  }
+  
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={logout}
+      icon="LogOut"
+      className="p-2"
+    />
   );
 };
 

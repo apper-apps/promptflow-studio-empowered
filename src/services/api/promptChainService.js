@@ -1,68 +1,237 @@
-import promptChainsData from "@/services/mockData/promptChains.json";
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+import { toast } from 'react-toastify';
 
-let data = [...promptChainsData.promptChains];
+const { ApperClient } = window.ApperSDK;
+const apperClient = new ApperClient({
+  apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+  apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+});
 
 export const promptChainService = {
   async getAll() {
-    await delay(300);
-    return [...data];
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } },
+          { field: { Name: "description" } },
+          { field: { Name: "nodes" } },
+          { field: { Name: "connections" } },
+          { field: { Name: "settings" } },
+          { field: { Name: "final_prompt" } },
+          { field: { Name: "status" } },
+          { field: { Name: "created_at" } },
+          { field: { Name: "updated_at" } },
+          { field: { Name: "user_id" } }
+        ],
+        orderBy: [
+          { fieldName: "created_at", sorttype: "DESC" }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords('prompt_chain', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching prompt chains:", error);
+      toast.error("Failed to load prompt chains");
+      return [];
+    }
   },
 
   async getById(id) {
-    await delay(250);
-    const chain = data.find(item => item.Id === parseInt(id, 10));
-    if (!chain) {
-      throw new Error('Prompt chain not found');
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } },
+          { field: { Name: "description" } },
+          { field: { Name: "nodes" } },
+          { field: { Name: "connections" } },
+          { field: { Name: "settings" } },
+          { field: { Name: "final_prompt" } },
+          { field: { Name: "status" } },
+          { field: { Name: "created_at" } },
+          { field: { Name: "updated_at" } },
+          { field: { Name: "user_id" } }
+        ]
+      };
+
+      const response = await apperClient.getRecordById('prompt_chain', parseInt(id, 10), params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (!response.data) {
+        throw new Error('Prompt chain not found');
+      }
+
+      // Transform database fields to UI format
+      const chain = {
+        Id: response.data.Id,
+        name: response.data.Name,
+        description: response.data.description,
+        userId: response.data.user_id,
+        nodes: response.data.nodes ? JSON.parse(response.data.nodes) : [],
+        connections: response.data.connections ? JSON.parse(response.data.connections) : [],
+        settings: response.data.settings ? JSON.parse(response.data.settings) : {},
+        finalPrompt: response.data.final_prompt,
+        status: response.data.status,
+        createdAt: response.data.created_at,
+        updatedAt: response.data.updated_at,
+        tags: response.data.Tags
+      };
+
+      return chain;
+    } catch (error) {
+      console.error(`Error fetching prompt chain with ID ${id}:`, error);
+      throw error;
     }
-    return { ...chain };
   },
 
   async create(chainData) {
-    await delay(400);
-    const maxId = Math.max(...data.map(item => item.Id), 0);
-    const newChain = {
-      ...chainData,
-      Id: maxId + 1,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    data.push(newChain);
-    return { ...newChain };
+    try {
+      const params = {
+        records: [
+          {
+            Name: chainData.name,
+            description: chainData.description,
+            nodes: JSON.stringify(chainData.nodes || []),
+            connections: JSON.stringify(chainData.connections || []),
+            settings: JSON.stringify(chainData.settings || {}),
+            final_prompt: chainData.finalPrompt || "",
+            status: chainData.status || "draft",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }
+        ]
+      };
+
+      const response = await apperClient.createRecord('prompt_chain', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          failedRecords.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null;
+      }
+    } catch (error) {
+      console.error("Error creating prompt chain:", error);
+      throw error;
+    }
   },
 
   async update(id, updates) {
-    await delay(350);
-    const index = data.findIndex(item => item.Id === parseInt(id, 10));
-    if (index === -1) {
-      throw new Error('Prompt chain not found');
+    try {
+      const params = {
+        records: [
+          {
+            Id: parseInt(id, 10),
+            Name: updates.name,
+            description: updates.description,
+            nodes: JSON.stringify(updates.nodes || []),
+            connections: JSON.stringify(updates.connections || []),
+            settings: JSON.stringify(updates.settings || {}),
+            final_prompt: updates.finalPrompt || "",
+            status: updates.status || "draft",
+            updated_at: new Date().toISOString()
+          }
+        ]
+      };
+
+      const response = await apperClient.updateRecord('prompt_chain', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          failedUpdates.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successfulUpdates.length > 0 ? successfulUpdates[0].data : null;
+      }
+    } catch (error) {
+      console.error("Error updating prompt chain:", error);
+      throw error;
     }
-    
-    const updatedChain = {
-      ...data[index],
-      ...updates,
-      Id: data[index].Id, // Preserve ID
-      updatedAt: new Date().toISOString()
-    };
-    
-    data[index] = updatedChain;
-    return { ...updatedChain };
   },
 
   async delete(id) {
-    await delay(300);
-    const index = data.findIndex(item => item.Id === parseInt(id, 10));
-    if (index === -1) {
-      throw new Error('Prompt chain not found');
+    try {
+      const params = {
+        RecordIds: [parseInt(id, 10)]
+      };
+
+      const response = await apperClient.deleteRecord('prompt_chain', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successfulDeletions = response.results.filter(result => result.success);
+        const failedDeletions = response.results.filter(result => !result.success);
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
+          failedDeletions.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successfulDeletions.length > 0;
+      }
+    } catch (error) {
+      console.error("Error deleting prompt chain:", error);
+      throw error;
     }
-    
-    const deletedChain = data[index];
-    data.splice(index, 1);
-    return { ...deletedChain };
   },
 
   async generateForm(chainId) {
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     await delay(800); // Simulate AI processing
+    
     const chain = await this.getById(chainId);
     
     // Simulate AI-generated form fields based on prompt chain
@@ -79,6 +248,7 @@ export const promptChainService = {
   },
 
   async executeChain(chainId, responses, apiKey, model) {
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     await delay(1200); // Simulate API call
     
     const chain = await this.getById(chainId);
@@ -101,7 +271,9 @@ Generated content with personalized elements based on your specific requirements
       tokenUsage: { prompt: 150, completion: 320, total: 470 }
     };
   },
+
   async analyzePrompt(prompt) {
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     await delay(1000); // Simulate AI analysis
     
     // AI would analyze the prompt and suggest form fields
@@ -141,7 +313,7 @@ Generated content with personalized elements based on your specific requirements
         label: 'User Input',
         variable: 'user_input',
         type: 'text',
-required: true
+        required: true
       });
     }
 
