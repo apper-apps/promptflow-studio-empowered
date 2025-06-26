@@ -11,6 +11,7 @@ import SkeletonLoader from '@/components/molecules/SkeletonLoader';
 import ErrorState from '@/components/molecules/ErrorState';
 import ApperIcon from '@/components/ApperIcon';
 import promptChainService from '@/services/api/promptChainService';
+import WizardBuilder from '@/components/organisms/WizardBuilder';
 
 const ChainEditor = () => {
   const [currentChain, setCurrentChain] = useState(null);

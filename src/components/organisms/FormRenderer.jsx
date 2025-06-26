@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import Card from '@/components/atoms/Card';
-import Button from '@/components/atoms/Button';
-import FormField from '@/components/molecules/FormField';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import FormField from "@/components/molecules/FormField";
+import Card from "@/components/atoms/Card";
+import Button from "@/components/atoms/Button";
 
 const FormRenderer = ({ 
   fields = [], 
@@ -13,7 +13,8 @@ const FormRenderer = ({
 }) => {
   const [responses, setResponses] = useState({});
   const [errors, setErrors] = useState({});
-
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isMultiStep] = useState(false); // Can be made configurable via props if needed
   const handleChange = (variable, value) => {
     setResponses(prev => ({ ...prev, [variable]: value }));
     // Clear error when user starts typing
@@ -71,30 +72,37 @@ const FormRenderer = ({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
-          <div className="space-y-6">
-            {fields.map((field, index) => (
-              <motion.div
-                key={field.id || field.variable}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <FormField
-                  type={field.type}
-                  label={field.label}
-                  value={responses[field.variable] || ''}
-                  onChange={(e) => handleChange(field.variable, e.target.value)}
-                  placeholder={field.placeholder}
-                  options={field.options}
-                  required={field.required}
-                  error={errors[field.variable]}
-                />
-                
-                {field.helpText && (
-                  <p className="mt-1 text-sm text-gray-400">{field.helpText}</p>
-                )}
-              </motion.div>
-            ))}
+<div className="space-y-6">
+            {(() => {
+              const fieldsPerStep = 3;
+              const startIndex = isMultiStep && fields.length > fieldsPerStep ? currentStep * fieldsPerStep : 0;
+              const endIndex = isMultiStep && fields.length > fieldsPerStep ? Math.min(startIndex + fieldsPerStep, fields.length) : fields.length;
+              const visibleFields = fields.slice(startIndex, endIndex);
+              
+              return visibleFields.map((field, index) => (
+                <motion.div
+                  key={field.id || field.variable}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <FormField
+                    type={field.type}
+                    label={field.label}
+                    value={responses[field.variable] || ''}
+                    onChange={(e) => handleChange(field.variable, e.target.value)}
+                    placeholder={field.placeholder}
+                    options={field.options}
+                    required={field.required}
+                    error={errors[field.variable]}
+                  />
+                  
+                  {field.helpText && (
+                    <p className="mt-1 text-sm text-gray-400">{field.helpText}</p>
+                  )}
+                </motion.div>
+              ));
+            })()}
           </div>
 
           <div className="mt-8 flex gap-3">

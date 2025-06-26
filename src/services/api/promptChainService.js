@@ -1,4 +1,4 @@
-import { promptChains } from '../mockData/promptChains.json';
+import { promptChains } from "@/services/mockData/promptChains.json";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -95,13 +95,58 @@ export const promptChainService = {
 
 Generated content with personalized elements based on your specific requirements and preferences.`;
 
-    return {
+return {
       prompt: finalPrompt,
       response: mockResponse,
       model: model,
       tokenUsage: { prompt: 150, completion: 320, total: 470 }
     };
+  },
+  async analyzePrompt(prompt) {
+    await delay(1000); // Simulate AI analysis
+    
+    // AI would analyze the prompt and suggest form fields
+    // This is a mock implementation that detects common patterns
+    const fields = [];
+    let fieldId = 1;
+    
+    // Detect common field patterns in prompts
+    const patterns = [
+      { regex: /name|title|product/i, type: 'text', label: 'Name/Title' },
+      { regex: /email|contact/i, type: 'email', label: 'Email Address' },
+      { regex: /description|details|explain/i, type: 'textarea', label: 'Description' },
+      { regex: /category|type|style/i, type: 'select', label: 'Category', options: ['Option 1', 'Option 2', 'Option 3'] },
+      { regex: /audience|target|demographic/i, type: 'select', label: 'Target Audience', options: ['General', 'Professional', 'Students', 'Seniors'] },
+      { regex: /tone|voice|style/i, type: 'select', label: 'Tone', options: ['Professional', 'Casual', 'Friendly', 'Formal'] },
+      { regex: /budget|price|cost/i, type: 'number', label: 'Budget' },
+      { regex: /website|url|link/i, type: 'url', label: 'Website URL' }
+    ];
+
+    patterns.forEach(pattern => {
+      if (pattern.regex.test(prompt)) {
+        fields.push({
+          id: `field-${fieldId++}`,
+          label: pattern.label,
+          variable: pattern.label.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+          type: pattern.type,
+          options: pattern.options || null,
+          required: true
+        });
+      }
+    });
+
+    // Always add at least one field if none detected
+    if (fields.length === 0) {
+      fields.push({
+        id: 'field-1',
+        label: 'User Input',
+        variable: 'user_input',
+        type: 'text',
+        required: true
+      });
+    }
+
+    return { fields, analyzedPrompt: prompt };
   }
-};
 
 export default promptChainService;

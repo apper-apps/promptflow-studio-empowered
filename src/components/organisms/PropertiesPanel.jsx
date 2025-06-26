@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Card from '@/components/atoms/Card';
-import Button from '@/components/atoms/Button';
-import FormField from '@/components/molecules/FormField';
-import ApperIcon from '@/components/ApperIcon';
-import Badge from '@/components/atoms/Badge';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import FormField from "@/components/molecules/FormField";
+import Card from "@/components/atoms/Card";
+import Badge from "@/components/atoms/Badge";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
 
 const PropertiesPanel = ({ 
   selectedNode, 
@@ -68,6 +69,57 @@ const PropertiesPanel = ({
   const removeOption = (index) => {
     const newOptions = nodeData.options.filter((_, i) => i !== index);
     handleChange('options', newOptions);
+};
+
+  const generateWizardFields = () => {
+    if (!selectedNode) return;
+    
+    // Auto-generate common form fields based on the label
+    const label = nodeData.label.toLowerCase();
+    let suggestions = {};
+    
+    if (label.includes('email')) {
+      suggestions = {
+        fieldType: 'email',
+        placeholder: 'Enter your email address',
+        required: true
+      };
+    } else if (label.includes('phone') || label.includes('number')) {
+      suggestions = {
+        fieldType: 'number',
+        placeholder: 'Enter phone number',
+        required: true
+      };
+    } else if (label.includes('url') || label.includes('website') || label.includes('link')) {
+      suggestions = {
+        fieldType: 'url',
+        placeholder: 'https://',
+        required: false
+      };
+    } else if (label.includes('select') || label.includes('choose') || label.includes('option')) {
+      suggestions = {
+        fieldType: 'select',
+        options: ['Option 1', 'Option 2', 'Option 3'],
+        required: true
+      };
+    } else if (label.includes('description') || label.includes('comment') || label.includes('message')) {
+      suggestions = {
+        fieldType: 'textarea',
+        placeholder: 'Enter detailed information...',
+        required: false
+      };
+    } else {
+      suggestions = {
+        fieldType: 'text',
+        placeholder: `Enter ${nodeData.label.toLowerCase()}`,
+        required: true
+      };
+    }
+    
+    // Apply suggestions
+    Object.entries(suggestions).forEach(([field, value]) => {
+      handleChange(field, value);
+    });
   };
 
   const handleDelete = () => {
@@ -231,7 +283,7 @@ const PropertiesPanel = ({
           </div>
         </Card>
 
-        {/* Actions */}
+{/* Actions */}
         <div className="flex gap-2">
           <Button 
             variant="danger" 
@@ -243,9 +295,28 @@ const PropertiesPanel = ({
             Delete Node
           </Button>
         </div>
+
+        {/* Wizard Actions */}
+        <Card padding="md">
+          <h3 className="text-sm font-medium text-white mb-4 flex items-center gap-2">
+            <ApperIcon name="Wand2" size={16} />
+            Wizard Tools
+          </h3>
+          
+          <div className="space-y-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={generateWizardFields}
+              icon="Sparkles"
+              className="w-full"
+            >
+              Generate Form Fields
+            </Button>
+          </div>
+        </Card>
       </div>
     </motion.div>
   );
-};
 
 export default PropertiesPanel;
