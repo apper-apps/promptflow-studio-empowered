@@ -1,0 +1,221 @@
+{
+  "templates": [
+    {
+      "Id": 1,
+      "name": "Content Marketing Funnel",
+      "description": "Create targeted content for different stages of the marketing funnel",
+      "category": "Marketing",
+      "thumbnail": "/templates/content-funnel.png",
+      "nodes": [
+        {
+          "id": "awareness",
+          "label": "What's your brand/product?",
+          "variable": "brand_name",
+          "fieldType": "text",
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "consideration",
+          "label": "What problem does it solve?",
+          "variable": "problem_solved",
+          "fieldType": "textarea",
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "decision",
+          "label": "What's your unique value proposition?",
+          "variable": "value_prop",
+          "fieldType": "textarea",
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "awareness", "target": "consideration" },
+        { "source": "consideration", "target": "decision" }
+      ],
+      "settings": {
+        "funnel_stage": "complete",
+        "content_types": ["blog", "social", "email"]
+      },
+      "uses": 234,
+      "rating": 4.8,
+      "createdAt": "2024-01-10T12:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "Id": 2,
+      "name": "Customer Interview Guide",
+      "description": "Generate structured questions for customer discovery interviews",
+      "category": "Research", 
+      "thumbnail": "/templates/interview-guide.png",
+      "nodes": [
+        {
+          "id": "product-focus",
+          "label": "What product/service are you researching?",
+          "variable": "product_focus",
+          "fieldType": "text",
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "customer-segment",
+          "label": "Who is your target customer?",
+          "variable": "target_customer",
+          "fieldType": "text",
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "research-goal",
+          "label": "What do you want to learn?",
+          "variable": "research_objective",
+          "fieldType": "select",
+          "options": ["Pain Points", "Feature Validation", "Pricing", "Usage Patterns"],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "product-focus", "target": "customer-segment" },
+        { "source": "customer-segment", "target": "research-goal" }
+      ],
+      "settings": {
+        "interview_length": "30-45 minutes",
+        "question_types": ["open-ended", "behavioral"]
+      },
+      "uses": 189,
+      "rating": 4.6,
+      "createdAt": "2024-01-12T09:30:00Z",
+      "updatedAt": "2024-01-18T14:20:00Z"
+    },
+    {
+      "Id": 3,
+      "name": "Email Sequence Builder",
+      "description": "Create automated email sequences for different customer journeys",
+      "category": "Email Marketing",
+      "thumbnail": "/templates/email-sequence.png", 
+      "nodes": [
+        {
+          "id": "sequence-type",
+          "label": "What type of email sequence?",
+          "variable": "sequence_type",
+          "fieldType": "select",
+          "options": ["Welcome Series", "Nurture Campaign", "Sales Funnel", "Re-engagement"],
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "audience",
+          "label": "Describe your audience",
+          "variable": "target_audience",
+          "fieldType": "textarea",
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "sequence-length",
+          "label": "How many emails?",
+          "variable": "email_count",
+          "fieldType": "select",
+          "options": ["3-5 emails", "6-8 emails", "9-12 emails", "12+ emails"],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "sequence-type", "target": "audience" },
+        { "source": "audience", "target": "sequence-length" }
+      ],
+      "settings": {
+        "personalization": "high",
+        "tone": "professional-friendly"
+      },
+      "uses": 156,
+      "rating": 4.7,
+      "createdAt": "2024-01-14T16:45:00Z",
+      "updatedAt": "2024-01-19T11:10:00Z"
+    },
+    {
+      "Id": 4,
+      "name": "Technical Documentation Writer",
+      "description": "Generate clear technical documentation and API guides",
+      "category": "Documentation",
+      "thumbnail": "/templates/tech-docs.png",
+      "nodes": [
+        {
+          "id": "doc-type",
+          "label": "What type of documentation?",
+          "variable": "documentation_type",
+          "fieldType": "select",
+          "options": ["API Documentation", "User Guide", "Installation Guide", "Troubleshooting"],
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "tech-stack",
+          "label": "What technology/product?",
+          "variable": "technology",
+          "fieldType": "text",
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "audience-level",
+          "label": "What's the audience technical level?",
+          "variable": "technical_level",
+          "fieldType": "select",
+          "options": ["Beginner", "Intermediate", "Advanced", "Expert"],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "doc-type", "target": "tech-stack" },
+        { "source": "tech-stack", "target": "audience-level" }
+      ],
+      "settings": {
+        "format": "structured",
+        "include_examples": true
+      },
+      "uses": 98,
+      "rating": 4.5,
+      "createdAt": "2024-01-16T13:20:00Z",
+      "updatedAt": "2024-01-21T09:45:00Z"
+    },
+    {
+      "Id": 5,
+      "name": "Course Curriculum Designer",
+      "description": "Design comprehensive learning curricula for online courses",
+      "category": "Education",
+      "thumbnail": "/templates/course-design.png",
+      "nodes": [
+        {
+          "id": "course-topic",
+          "label": "What's your course topic?",
+          "variable": "course_subject",
+          "fieldType": "text",
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "duration",
+          "label": "How long should the course be?",
+          "variable": "course_duration",
+          "fieldType": "select",
+          "options": ["1-2 weeks", "1 month", "2-3 months", "6+ months"],
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "learning-level",
+          "label": "What's the target skill level?",
+          "variable": "skill_level",
+          "fieldType": "select",
+          "options": ["Complete Beginner", "Some Experience", "Intermediate", "Advanced"],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "course-topic", "target": "duration" },
+        { "source": "duration", "target": "learning-level" }
+      ],
+      "settings": {
+        "structure": "modular",
+        "assessment_included": true
+      },
+      "uses": 76,
+      "rating": 4.9,
+      "createdAt": "2024-01-17T10:15:00Z",
+      "updatedAt": "2024-01-20T15:30:00Z"
+    }
+  ]
+}

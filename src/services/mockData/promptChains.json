@@ -1,0 +1,145 @@
+{
+  "promptChains": [
+    {
+      "Id": 1,
+      "name": "Product Description Generator",
+      "description": "Generate compelling product descriptions for e-commerce",
+      "userId": "user-1",
+      "nodes": [
+        {
+          "id": "node-1",
+          "label": "What is your product name?",
+          "variable": "product_name",
+          "fieldType": "text",
+          "options": null,
+          "conditions": [],
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "node-2", 
+          "label": "Who is your target audience?",
+          "variable": "target_audience",
+          "fieldType": "text",
+          "options": null,
+          "conditions": [],
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "node-3",
+          "label": "What are the key features?",
+          "variable": "key_features",
+          "fieldType": "textarea",
+          "options": null,
+          "conditions": [],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "node-1", "target": "node-2" },
+        { "source": "node-2", "target": "node-3" }
+      ],
+      "settings": {
+        "theme": "professional",
+        "tone": "persuasive"
+      },
+      "finalPrompt": "Write a compelling product description for {{product_name}} targeting {{target_audience}}. Highlight these key features: {{key_features}}. Make it persuasive and professional.",
+      "status": "published",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-20T14:15:00Z"
+    },
+    {
+      "Id": 2,
+      "name": "Blog Post Outline Creator",
+      "description": "Create structured blog post outlines based on topic and audience",
+      "userId": "user-1",
+      "nodes": [
+        {
+          "id": "node-1",
+          "label": "What's your blog post topic?",
+          "variable": "blog_topic",
+          "fieldType": "text",
+          "options": null,
+          "conditions": [],
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "node-2",
+          "label": "What's your target word count?",
+          "variable": "word_count",
+          "fieldType": "select",
+          "options": ["500-800", "800-1200", "1200-2000", "2000+"],
+          "conditions": [],
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "node-3",
+          "label": "What's the primary goal?",
+          "variable": "content_goal",
+          "fieldType": "select",
+          "options": ["Educate", "Entertain", "Persuade", "Inform"],
+          "conditions": [],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "node-1", "target": "node-2" },
+        { "source": "node-2", "target": "node-3" }
+      ],
+      "settings": {
+        "structure": "hierarchical",
+        "style": "professional"
+      },
+      "finalPrompt": "Create a detailed blog post outline for '{{blog_topic}}' with {{word_count}} words. The primary goal is to {{content_goal}}. Include compelling headlines, subheadings, and key points for each section.",
+      "status": "draft",
+      "createdAt": "2024-01-18T09:45:00Z",
+      "updatedAt": "2024-01-18T16:20:00Z"
+    },
+    {
+      "Id": 3,
+      "name": "Social Media Campaign Planner",
+      "description": "Plan comprehensive social media campaigns across platforms",
+      "userId": "user-1",
+      "nodes": [
+        {
+          "id": "node-1",
+          "label": "What's your campaign goal?",
+          "variable": "campaign_goal",
+          "fieldType": "select",
+          "options": ["Brand Awareness", "Lead Generation", "Sales", "Engagement"],
+          "conditions": [],
+          "position": { "x": 100, "y": 100 }
+        },
+        {
+          "id": "node-2",
+          "label": "Which platforms will you use?",
+          "variable": "platforms",
+          "fieldType": "multiselect",
+          "options": ["Instagram", "Facebook", "Twitter", "LinkedIn", "TikTok", "YouTube"],
+          "conditions": [],
+          "position": { "x": 300, "y": 100 }
+        },
+        {
+          "id": "node-3",
+          "label": "What's your campaign duration?",
+          "variable": "duration",
+          "fieldType": "select",
+          "options": ["1 week", "2 weeks", "1 month", "3 months", "Ongoing"],
+          "conditions": [],
+          "position": { "x": 500, "y": 100 }
+        }
+      ],
+      "connections": [
+        { "source": "node-1", "target": "node-2" },
+        { "source": "node-2", "target": "node-3" }
+      ],
+      "settings": {
+        "format": "detailed",
+        "includeMetrics": true
+      },
+      "finalPrompt": "Create a comprehensive social media campaign plan for {{campaign_goal}} across {{platforms}} for {{duration}}. Include content themes, posting schedules, engagement strategies, and key performance indicators.",
+      "status": "published",
+      "createdAt": "2024-01-20T11:15:00Z",
+      "updatedAt": "2024-01-22T08:30:00Z"
+    }
+  ]
+}

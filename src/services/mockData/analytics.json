@@ -1,0 +1,106 @@
+{
+  "analytics": {
+    "overview": {
+      "totalChains": 12,
+      "totalExecutions": 456,
+      "successRate": 94.2,
+      "avgResponseTime": 2.3,
+      "thisMonth": {
+        "executions": 89,
+        "newChains": 3,
+        "growth": 12.5
+      }
+    },
+    "usageStats": {
+      "7d": [
+        { "date": "2024-01-16", "executions": 12, "success": 11 },
+        { "date": "2024-01-17", "executions": 18, "success": 17 },
+        { "date": "2024-01-18", "executions": 15, "success": 14 },
+        { "date": "2024-01-19", "executions": 22, "success": 21 },
+        { "date": "2024-01-20", "executions": 19, "success": 18 },
+        { "date": "2024-01-21", "executions": 25, "success": 24 },
+        { "date": "2024-01-22", "executions": 16, "success": 15 }
+      ],
+      "30d": [
+        { "date": "2024-01-01", "executions": 45, "success": 42 },
+        { "date": "2024-01-08", "executions": 52, "success": 49 },
+        { "date": "2024-01-15", "executions": 48, "success": 46 },
+        { "date": "2024-01-22", "executions": 61, "success": 58 }
+      ]
+    },
+    "chainPerformance": [
+      {
+        "Id": 1,
+        "name": "Product Description Generator", 
+        "executions": 156,
+        "successRate": 96.2,
+        "avgResponseTime": 2.1,
+        "lastUsed": "2024-01-22T10:30:00Z"
+      },
+      {
+        "Id": 2,
+        "name": "Blog Post Outline Creator",
+        "executions": 89,
+        "successRate": 91.0,
+        "avgResponseTime": 2.8,
+        "lastUsed": "2024-01-21T15:45:00Z"
+      },
+      {
+        "Id": 3,
+        "name": "Social Media Campaign Planner",
+        "executions": 124,
+        "successRate": 94.4,
+        "avgResponseTime": 1.9,
+        "lastUsed": "2024-01-22T09:15:00Z"
+      }
+    ],
+    "modelUsage": [
+      { "model": "gpt-4-turbo-preview", "executions": 234, "percentage": 51.3 },
+      { "model": "claude-3-sonnet", "executions": 128, "percentage": 28.1 },
+      { "model": "gpt-3.5-turbo", "executions": 67, "percentage": 14.7 },
+      { "model": "gemini-pro", "executions": 27, "percentage": 5.9 }
+    ],
+    "recentActivity": [
+      {
+        "Id": 1,
+        "type": "execution",
+        "chainName": "Product Description Generator",
+        "status": "success",
+        "timestamp": "2024-01-22T14:30:00Z",
+        "model": "gpt-4-turbo-preview"
+      },
+      {
+        "Id": 2,
+        "type": "created",
+        "chainName": "Email Subject Line Generator",
+        "status": "success",
+        "timestamp": "2024-01-22T11:15:00Z",
+        "model": null
+      },
+      {
+        "Id": 3,
+        "type": "execution",
+        "chainName": "Social Media Campaign Planner",
+        "status": "success",
+        "timestamp": "2024-01-22T09:45:00Z",
+        "model": "claude-3-sonnet"
+      },
+      {
+        "Id": 4,
+        "type": "execution",
+        "chainName": "Blog Post Outline Creator",
+        "status": "failed",
+        "timestamp": "2024-01-21T16:20:00Z",
+        "model": "gpt-3.5-turbo"
+      },
+      {
+        "Id": 5,
+        "type": "updated",
+        "chainName": "Product Description Generator",
+        "status": "success", 
+        "timestamp": "2024-01-21T13:30:00Z",
+        "model": null
+      }
+    ]
+  }
+}
